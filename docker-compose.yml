@@ -1,0 +1,9 @@
+version: '3.1'
+
+services:
+
+  app:
+    build: .
+    container_name: "urltest"
+    ports:
+      - "8001:8001"
