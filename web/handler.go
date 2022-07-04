@@ -78,16 +78,15 @@ func handleUrls(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var wg sync.WaitGroup
-
-	// create context with cancel for stop all goroutines
+	// create context with cancel to stop all goroutines
 	ctx, cancel := context.WithCancel(r.Context())
 
-	// channel for results of URL
 	// 4 - limit
 	ch := make(chan Response, cfg.Req)
 
 	defer cancel()
+
+	var wg sync.WaitGroup
 
 	for _, u := range i.URL {
 		_, err := url.ParseRequestURI(u)
@@ -112,7 +111,6 @@ func handleUrls(w http.ResponseWriter, r *http.Request) {
 				}
 				req = req.WithContext(ctx)
 
-				// HTTP client with timeout 1 second
 				client := http.Client{Timeout: 1 * time.Second}
 				resp, err := client.Do(req)
 				if err != nil {
@@ -174,12 +172,6 @@ func handleUrls(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getHeaders(in http.Header, out map[string]string) {
-	for k, v := range in {
-		out[k] = v[0]
-	}
-}
-
 func isMethodPOST(w http.ResponseWriter, r *http.Request) bool {
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -187,3 +179,11 @@ func isMethodPOST(w http.ResponseWriter, r *http.Request) bool {
 	}
 	return true
 }
+
+func getHeaders(in http.Header, out map[string]string) {
+	for k, v := range in {
+		out[k] = v[0]
+	}
+}
+
+
