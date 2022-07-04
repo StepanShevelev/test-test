@@ -1,8 +1,6 @@
 
 # Simple HTTP Multiplexer
 
-## Task description
-
 Simple HTTP Multiplexer
 - приложение представляет собой http-сервер с одним хендлером
 - хендлер на вход получает POST-запрос со списком url в json-формате  
